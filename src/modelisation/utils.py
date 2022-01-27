@@ -37,3 +37,4 @@ def count_label_occurences(L):
             count += 1
   
     return count, freq
+
