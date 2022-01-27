@@ -7,7 +7,4 @@ def ROC(y, y_predicted, model_name):
     roc_auc = metrics.auc(fpr, tpr)
     display = metrics.RocCurveDisplay(fpr=fpr, tpr=tpr, roc_auc=roc_auc, estimator_name=model_name)
     display.plot()
-    plt.show()
-    
-    
-    
+    plt.show()  
