@@ -100,3 +100,46 @@ print('accuracy_score on test dataset :', accuracy_test)
 
 print(classification_report(predictions, Y_test))
 
+
+# Lorsqu’il est question de classifications le choix des métriques utilisées pour évaluer un modèle est primordial. 
+# Voici quelques unes des métriques que l’on pourrait considérer :
+
+# Précision : c’est la métrique la plus simple que l’on ait, il s’agit simplement de la proportion de prédictions correctes parmi toutes 
+ # les prédictions faites par le modèle.
+# Recall : le recall est initialement une métrique utilisée pour des classifications binaires correspond à la proportion de prédictions 
+#  positive lorsqu’on s’attend à ce que le résultat soit positif.
+# F1-Score : le F1-Score est une combinaison des deux métriques précédente, il est souvent utilisé dans les papiers de recherches pour comparer 
+#  les performances entre deux classifieurs.
+# Bien que le F1-Score et le Recall soient initialement des métriques prévues pour des classifieurs binaires, il est très facile de les adapter à 
+# des situations multi-classes.
+
+# matrice de confusion
+
+sns.set()
+mat = confusion_matrix(Y_test, predictions)
+sns.heatmap(mat.T, square=True, annot=True, fmt='d', cbar=False, xticklabels=genres, yticklabels=genres)
+plt.xlabel('true label')
+plt.ylabel('predicted label')
+
+
+## Interprétation des résultats
+
+# Un des avantages de random forest par rapport à d’autres modèles de machine learning, est qu’il permet d’interpréter facilement les résultats
+# que l’on obtient.
+
+# On peut par exemple afficher un diagramme représentant l’importance des features dans le choix de classification :
+
+plt.style.use('fivethirtyeight')
+
+importances = list(rf.feature_importances_)
+
+x_values = list(range(len(importances)))
+plt.bar(x_values, importances, orientation = 'vertical')
+plt.xticks(x_values, feature_list, rotation='vertical')
+plt.ylabel('Importance'); plt.xlabel('Variable'); plt.title('Variable Importances')
+  
+  
+  
+  
+  
+  
