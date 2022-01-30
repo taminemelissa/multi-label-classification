@@ -1,3 +1,16 @@
+import pandas as pd # Pour le dataframe
+import numpy as np # Pour la normalisation et calculs de moyenne
+import matplotlib.pyplot as plt # Pour la visualisation
+
+from sklearn.model_selection import train_test_split, GridSearchCV, validation_curve, RandomizedSearchCV 
+# Split de dataset et optimisation des hyperparamètres
+from sklearn.ensemble import RandomForestClassifier # Random forest
+
+from sklearn.metrics import accuracy_score, confusion_matrix, recall_score, f1_score, zero_one_loss, classification_report 
+# Métriques pour la mesure de performances
+
+
+
 #  on affiche tous les paramètres qui peuvent être optimisée
 
 rf = RandomForestClassifier(random_state = 0)
