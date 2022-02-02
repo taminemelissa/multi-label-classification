@@ -6,5 +6,5 @@ dist
 *.gz
 *.checkpoint
 .ipynb_checkpoints
-.parquet
-.csv
+*.parquet
+*.csv
