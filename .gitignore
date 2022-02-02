@@ -1,10 +1,10 @@
 *.pyc
 .idea
-.parquet
-.csv
 build
 dist
 *egg-info
 *.gz
 *.checkpoint
 .ipynb_checkpoints
+.parquet
+.csv
