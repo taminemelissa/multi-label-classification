@@ -29,19 +29,21 @@ def transform_parquet_to_csv(file_path,name_csv):
 #pour le rendu p=1, pour tester le code p=0.5 
 #par défaut on garde que les audio features 
 #on choisit d'enlever 'song title' et 'artist_name' pour l'instant
+
 def extract_values_array(df,p,usage=False):
     n=df.shape[0]
     df_extracted= df.sample(int(p*n), random_state=0)
     df_extracted.drop(columns=['song_title','artist_name'],inplace=True)
     #pour qu'on ait des sorties similaires à travers plusieurs appels
     columns3=[]
-    if usage==False:
+    if (usage==False):
         for i in range (1,129):
             col2= 'usage_feature_%i' % i
             columns3.append(col2)
         df_extracted.drop(columns=columns3,inplace=True)
     l=list(df_extracted.columns[0:22])
+    x=list(df_extracted.columns[22:])
     l.remove('song_index')
+    X=df_extracted[x].values
     Y=df_extracted[l].values
-    X=df_extracted[22:].values
     return(X,Y)
