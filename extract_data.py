@@ -5,6 +5,7 @@ from math import *
 
 def transform_parquet_to_csv(file_path,name_csv):
     df=pd.read_parquet(file_path, engine="pyarrow")
+    ind=df.index
     columns1=[]
     for i in range (1,257):
       col1= 'audio_feature_%i' % i
@@ -13,10 +14,10 @@ def transform_parquet_to_csv(file_path,name_csv):
     for i in range (1,129):
       col2= 'usage_feature_%i' % i
       columns2.append(col2)
-    split_df_audio = pd.DataFrame(df['audio_features'].tolist(),columns=columns1)
-    split_df_usage=pd.DataFrame(df['usage_features'].tolist(),columns=columns2)
-    df1 = pd.concat([df, split_df_audio], axis=1)
-    df =pd.concat([df1, split_df_usage], axis=1)
+    split_df_audio = pd.DataFrame(df['audio_features'].tolist(),columns=columns1,index=ind)
+    split_df_usage=pd.DataFrame(df['usage_features'].tolist(),columns=columns2,index=ind)
+    df1 = pd.concat([df, split_df_audio], axis=1,index=ind)
+    df =pd.concat([df1, split_df_usage], axis=1,index=ind)
     df.drop(columns=['audio_features','usage_features'], inplace=True)
     df.set_index('song_index', inplace=True,drop=True)
     df.to_csv(name_csv)
