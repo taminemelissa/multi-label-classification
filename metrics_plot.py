@@ -1,6 +1,13 @@
 from sklearn import metrics
 from math import *
 import matplotlib.pyplot as plt
+from sklearn.metrics import precision_score
+from sklearn.metrics import accuracy_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import hamming_loss
+from sklearn.metrics import f1_score
+import numpy as np
+import seaborn as sns
 
 
 #return la valeur de l'auc en plus
@@ -15,7 +22,7 @@ def plot_roc_curve(y_test,y_hat,title,save=False,name_fig=None):
     plt.ylim([0, 1])
     plt.ylabel('True Positive Rate')
     plt.xlabel('False Positive Rate')
-    if save==False:
+    if not save:
         plt.show()
     else:
         plt.savefig(name_fig)
@@ -27,7 +34,7 @@ import itertools
 """ Fonction qui permet de plot la confusion matrix normalisée ou pas, choisir de save ou pas, title correspond ici au titre de la fig
 et pas au nom du fichier, la matrice est plot dans le sens usuel ie [TP,FN]
                                                                     [FP,TN] """
-def plot_confusion_matrix(cm,title,classes,cmap=plt.cm.Blues,normalize=False,save=False,name_fig=None):
+def plot_confusion_matrix(cm, title, classes,cmap=plt.cm.Blues, normalize=False, save=False,name_fig=None):
     cm2=cm
 
     if normalize:
@@ -58,3 +65,26 @@ def plot_confusion_matrix(cm,title,classes,cmap=plt.cm.Blues,normalize=False,sav
     else:
          plt.show()
     plt.clf()
+    return()
+
+def all_metrics(y_true,y_pred):
+    acc=accuracy_score(y_true,y_pred)
+    pre=precision_score(y_true,y_pred,average='micro')
+    rec=recall_score(y_true,y_pred,average='micro')
+    f1=f1_score(y_true,y_pred,average='micro')
+    hl=hamming_loss(y_true,y_pred)
+    r=[acc,pre,rec,f1,hl]
+    return(r)
+
+def graph_auc(auc_values,method,save=False,name_fig=None):
+    l=['asian','rnb','reggae','blues', 'pop','dance','folk','arabic-music', 'indie', 'rock', 'soulfunk', 'latin', 'classical', 'k-pop','brazilian', 'metal','rap', 'jazz','electronic','african','country']
+    x=list(np.arange(1,22))
+    plt.scatter(x,auc_values)
+    plt.xlabel('Label')
+    plt.xticks(x,l,rotation=90)
+    plt.ylabel('AUC')
+    plt.title('AUC for each label '+method)
+    if save:
+        plt.savefig(name_fig)
+    else:
+        plt.show()

@@ -1,5 +1,9 @@
 import pandas as pd
 from math import *
+from sklearn.preprocessing import StandardScaler
+import joblib as jl
+import os
+
 #fonction qui transforme le fichier parquet en un fichier csv avec des colonnes pour chaque coordonnées des vecteurs usage_features et audio_features
 #return en plus le dataframe.csv
 
@@ -16,8 +20,8 @@ def transform_parquet_to_csv(file_path,name_csv):
       columns2.append(col2)
     split_df_audio = pd.DataFrame(df['audio_features'].tolist(),columns=columns1,index=ind)
     split_df_usage=pd.DataFrame(df['usage_features'].tolist(),columns=columns2,index=ind)
-    df1 = pd.concat([df, split_df_audio], axis=1,index=ind)
-    df =pd.concat([df1, split_df_usage], axis=1,index=ind)
+    df1 = pd.concat([df, split_df_audio], axis=1)
+    df =pd.concat([df1, split_df_usage], axis=1)
     df.drop(columns=['audio_features','usage_features'], inplace=True)
     df.set_index('song_index', inplace=True,drop=True)
     df.to_csv(name_csv)
@@ -31,13 +35,13 @@ def transform_parquet_to_csv(file_path,name_csv):
 #par défaut on garde que les audio features 
 #on choisit d'enlever 'song title' et 'artist_name' pour l'instant
 
-def extract_values_array(df,p,usage=False):
+def extract_values_array(df,p,normalize=False,usage=False):
     n=df.shape[0]
     df_extracted= df.sample(int(p*n), random_state=0)
     df_extracted.drop(columns=['song_title','artist_name'],inplace=True)
     #pour qu'on ait des sorties similaires à travers plusieurs appels
     columns3=[]
-    if (usage==False):
+    if not usage:
         for i in range (1,129):
             col2= 'usage_feature_%i' % i
             columns3.append(col2)
@@ -46,5 +50,15 @@ def extract_values_array(df,p,usage=False):
     x=list(df_extracted.columns[22:])
     l.remove('song_index')
     X=df_extracted[x].values
+    if normalize:
+        X = StandardScaler().fit_transform(X)
     Y=df_extracted[l].values
     return(X,Y)
+
+def load_fit(estimator, X_train, Y_train, filename, retrain=False):
+    if not os.path.isfile(filename) or retrain:
+        fitted = estimator.fit(X_train, Y_train)
+        jl.dump(fitted, filename)
+    else:
+        fitted = jl.load(filename)
+    return(fitted)
