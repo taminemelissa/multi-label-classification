@@ -79,7 +79,7 @@ def all_metrics(y_true,y_pred):
 def graph_auc(auc_values,method,save=False,name_fig=None):
     l=['asian','rnb','reggae','blues', 'pop','dance','folk','arabic-music', 'indie', 'rock', 'soulfunk', 'latin', 'classical', 'k-pop','brazilian', 'metal','rap', 'jazz','electronic','african','country']
     x=list(np.arange(1,22))
-    plt.scatter(x,auc_values)
+    plt.bar(x,auc_values)
     plt.xlabel('Label')
     plt.xticks(x,l,rotation=90)
     plt.ylabel('AUC')
