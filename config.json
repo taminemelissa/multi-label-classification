@@ -1,0 +1,9 @@
+{
+    "checkpoints": "../multi-label-classification/audio_model.pth'",
+    "logs": "../multi-label-classification",
+    "lr" = 0.0001,
+    "epochs" = 20,
+    "batch_size" = 32,
+    "model": "AudioNet1()"
+    
+}
