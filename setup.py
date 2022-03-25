@@ -8,4 +8,4 @@ setup(name='multi-label-classification',
       author_email='zineb.bentires@ensae.fr, sirine.louati@ensae.fr, louise.sirven@ensae.fr, melissa.tamine@ensae.fr',
       package_dir={'': 'src'},
       packages=find_packages('src'),
-      install_requires=['numpy', 'pandas', 'matplotlib', 'scipy', 'seaborn'])
+      install_requires=['numpy', 'pandas', 'matplotlib', 'scipy', 'seaborn', 'torch'])
