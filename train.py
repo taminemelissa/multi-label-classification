@@ -1,5 +1,3 @@
-import torch
-import torch.nn as nn
 import torch.optim as optim
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -8,17 +6,18 @@ from models import *
 from dataset import TrackDataset
 from torch.utils.data import DataLoader
 import os
+from src.modelisation.utils import load_json
+
 matplotlib.style.use('ggplot')
 
-
-#load the config file
+# load the config file
 config = load_json('config.json')
 
 # initialize the computation device
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-#intialize the model
-model = config['model'][0] # initialize the neural network
+# initialize the model
+model = config['model'][0]  # initialize the neural network
 model.to(device=device)
 
 # learning parameters
@@ -47,21 +46,21 @@ valid_loader = DataLoader(valid_data, batch_size=batch_size, shuffle=False)
 train_loss = []
 valid_loss = []
 for epoch in range(epochs):
-    print(f"Epoch {epoch+1} of {epochs}")
+    print(f"Epoch {epoch + 1} of {epochs}")
     train_epoch_loss = train(model, train_loader, optimizer, criterion, train_data, device)
     valid_epoch_loss = validate(model, valid_loader, criterion, valid_data, device)
     train_loss.append(train_epoch_loss)
     valid_loss.append(valid_epoch_loss)
     print(f"Train Loss: {train_epoch_loss:.4f}")
     print(f'Val Loss: {valid_epoch_loss:.4f}')
-    
+
 # save the trained model to disk
 torch.save({
-            'epoch': epochs,
-            'model_state_dict': model.state_dict(),
-            'optimizer_state_dict': optimizer.state_dict(),
-            'loss': criterion,
-            }, os.path.join(config['checkpoints'], 'best-checkpoint.pth'))
+    'epoch': epochs,
+    'model_state_dict': model.state_dict(),
+    'optimizer_state_dict': optimizer.state_dict(),
+    'loss': criterion,
+}, os.path.join(config['checkpoints'], 'best-checkpoint.pth'))
 
 # plot and save the train and validation graphs
 plt.figure(figsize=(10, 7))

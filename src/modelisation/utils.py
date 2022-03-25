@@ -1,5 +1,7 @@
 import pandas as pd
 from math import *
+import json
+
 
 def create_labels(data, n_labels):
     labels = [[] for i in range(len(data))]
@@ -57,5 +59,10 @@ def convert_string_labels_into_numbers(df, labels):
     genres = list(df.columns[:21])
     Y = [genres.index(label[0]) for label in labels]
     return Y
+
+
+def load_json(input_filename):
+    with open(input_filename, 'r', encoding='utf8') as f:
+        return json.load(f)
 
 
