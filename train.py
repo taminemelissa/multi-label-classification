@@ -59,8 +59,7 @@ torch.save({
     'epoch': epochs,
     'model_state_dict': model.state_dict(),
     'optimizer_state_dict': optimizer.state_dict(),
-    'loss': criterion,
-}, os.path.join(config['checkpoints'], 'best-checkpoint.pth'))
+    'loss': criterion,}, os.path.join(config['checkpoints'], 'best-checkpoint.pth'))
 
 # plot and save the train and validation graphs
 plt.figure(figsize=(10, 7))
