@@ -3,7 +3,7 @@ import numpy as np
 from torch.utils.data import Dataset
 
 
-class TracksDataset(Dataset):
+class TrackDataset(Dataset):
     def __init__(self, df, train, test):
         self.df = df
         self.train = train
