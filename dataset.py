@@ -36,7 +36,7 @@ class TracksDataset(Dataset):
             self.labels = list(self.all_labels[-100:])
 
     def __len__(self):
-        return len(self.image_names)
+        return len(self.labels)
 
     def __getitem__(self, index):
         audio_feature = self.audio_features[index]
