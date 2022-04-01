@@ -68,11 +68,11 @@ def plot_confusion_matrix(cm, title, classes,cmap=plt.cm.Blues, normalize=False,
     return()
 
 def all_metrics(y_true,y_pred):
-    acc=accuracy_score(y_true,y_pred)
-    pre=precision_score(y_true,y_pred,average='micro')
-    rec=recall_score(y_true,y_pred,average='micro')
-    f1=f1_score(y_true,y_pred,average='micro')
-    hl=hamming_loss(y_true,y_pred)
+    acc=round(accuracy_score(y_true,y_pred),3)
+    pre=round(precision_score(y_true,y_pred,average='micro'),3)
+    rec=round(recall_score(y_true,y_pred,average='micro'),3)
+    f1=round(f1_score(y_true,y_pred,average='micro'),3)
+    hl=round(hamming_loss(y_true,y_pred),3)
     r=[acc,pre,rec,f1,hl]
     return(r)
 
