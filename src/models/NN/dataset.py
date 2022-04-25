@@ -52,6 +52,6 @@ class TrackDataset(Dataset):
         return {
             'audio_feature': torch.tensor(audio_feature, dtype=torch.float32),
             'usage_feature': torch.tensor(usage_feature, dtype=torch.float32),
-            'feature': torch.tensor(feature, dtype=torch.float32)
+            'feature': torch.tensor(feature, dtype=torch.float32),
             'label': torch.tensor(targets, dtype=torch.float32)
         }

@@ -70,7 +70,7 @@ def load_json(input_filename):
 def concatenate_features(df):
     l = []
     for i in range(len(df)):
-        arr = np.array([*det['audio_features'][i], *det['usage_features'][i]])
+        arr = np.array([*df['audio_features'][i], *df['usage_features'][i]])
         l.append(arr)
     return pd.Series(l)
         
