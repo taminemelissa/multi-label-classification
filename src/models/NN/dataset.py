@@ -24,7 +24,7 @@ class TrackDataset(Dataset):
 
         # set the validation features and labels
         elif self.train == False and self.test == False:
-            print(f"Number of validation images: {self.valid_ratio}")
+            print(f"Number of validation features: {self.valid_ratio}")
             self.audio_features = list(self.all_audio_features[-self.valid_ratio:-100])
             self.usage_features = list(self.all_usage_features[-self.valid_ratio:-100])
             self.labels = list(self.all_labels[-self.valid_ratio:-100])

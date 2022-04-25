@@ -6,7 +6,7 @@ from tqdm import tqdm
 class AudioNet1(nn.Module):
     def __init__(self):
         super(AudioNet1, self).__init__()
-        self.fc1 = nn.Linear(256, 22)  # linear layer (256 -> 22)
+        self.fc1 = nn.Linear(256, 21)  # linear layer (256 -> 22)
 
     def forward(self, x):
         x = self.fc1(x)
@@ -16,7 +16,7 @@ class AudioNet1(nn.Module):
 class UsageNet1(nn.Module):
     def __init__(self):
         super(UsageNet1, self).__init__()
-        self.fc1 = nn.Linear(128, 22)  # linear layer (128 -> 22)
+        self.fc1 = nn.Linear(128, 21)  # linear layer (128 -> 22)
 
     def forward(self, x):
         x = self.fc1(x)
@@ -60,7 +60,7 @@ def validate(model, dataloader, criterion, val_data, device, audio_bool):
         for i, data in tqdm(enumerate(dataloader), total=int(len(val_data) / dataloader.batch_size)):
             counter += 1
             if audio_bool:
-                data, target = data['audio_features'].to(device), data['label'].to(device)
+                data, target = data['audio_feature'].to(device), data['label'].to(device)
             else:
                 data, target = data['usage_feature'].to(device), data['label'].to(device)
             outputs = model(data)
