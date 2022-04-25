@@ -1,6 +1,6 @@
 {
-    "checkpoints": "model.pth",
+    "data_path": "dataset2.parquet"
     "lr": 0.0001,
-    "epochs": 20,
+    "epochs": 30,
     "batch_size": 32
 }

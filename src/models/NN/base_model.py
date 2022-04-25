@@ -3,26 +3,42 @@ import torch.nn as nn
 from tqdm import tqdm
 
 
-class AudioNet1(nn.Module):
+class BaseNet(nn.Module):
     def __init__(self):
-        super(AudioNet1, self).__init__()
-        self.fc1 = nn.Linear(256, 21)  # linear layer (256 -> 22)
+        self.name = type(self).__name__
+        self.data_type = 0
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        
+    def train(self, dataloader, optimizer, criterion, train_data, device):
+        print('Training')
+        model.train()
+        counter = 0
+        train_running_loss = 0.0
+        for i, data in tqdm(enumerate(dataloader), total=int(len(train_data) / dataloader.batch_size)):
+            counter += 1
+            if data_type==0:
+                data, target = data['audio_feature'].to(device), data['label'].to(device)
+            elif data_type==1:
+                data, target = data['usage_feature'].to(device), data['label'].to(device)
+            else:
+                data, target = data['usage_feature'].to(device), data['label'].to(device)
+            optimizer.zero_grad()
+            outputs = model(data)
+            # apply sigmoid activation to get all the outputs between 0 and 1
+            outputs = torch.sigmoid(outputs)
+            loss = criterion(outputs, target)
+            train_running_loss += loss.item()
+            # backpropagation
+            loss.backward()
+            # update optimizer parameters
+            optimizer.step()
 
-    def forward(self, x):
-        x = self.fc1(x)
-        return x
-
-
-class UsageNet1(nn.Module):
-    def __init__(self):
-        super(UsageNet1, self).__init__()
-        self.fc1 = nn.Linear(128, 21)  # linear layer (128 -> 22)
-
-    def forward(self, x):
-        x = self.fc1(x)
-        return x
-
-
+        train_loss = train_running_loss / counter
+        return train_loss
+    
+    def validate(model, dataloader, criterion, val_data, device):
+        raise NotImplementedError
+        
 # training function
 def train(model, dataloader, optimizer, criterion, train_data, device, audio_bool=1):
     print('Training')

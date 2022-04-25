@@ -1,21 +1,25 @@
 if __name__ == '__main__':
+    
     import os
     import sys
+    project_dir = os.getcwd().split('src')[0]
+    sys.path.append(project_dir)
+    
+    import numpy as np
+    import pandas as pd
+    import torch
     import torch.optim as optim
     import pandas as pd
     import matplotlib.pyplot as plt
     import matplotlib
-    from models import *
-    from dataset import TrackDataset
+    matplotlib.style.use('ggplot')
+    from src.models.NN.NN import *
+    from src.models.NN.dataset import TrackDataset
     from torch.utils.data import DataLoader
     from src.utils.tools import load_json
 
-    matplotlib.style.use('ggplot')
-    project_dir = os.getcwd().split('src')[0]
-    sys.path.append(project_dir)
-
     # load the config file
-    config = load_json('config.json')
+    config = load_json(os.path.join(project_dir, "src/models/NN/config.json"))
 
     # initialize the computation device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -32,7 +36,7 @@ if __name__ == '__main__':
     criterion = nn.BCELoss()
 
     # read the parquet file
-    df = pd.read_parquet("dataset2.parquet", engine="pyarrow")
+    df = pd.read_parquet(os.path.join(project_dir,"dataset2.parquet"), engine="pyarrow")
 
     # train dataset
     train_data = TrackDataset(df, train=True, test=False)
@@ -63,7 +67,7 @@ if __name__ == '__main__':
         'epoch': epochs,
         'model_state_dict': model.state_dict(),
         'optimizer_state_dict': optimizer.state_dict(),
-        'loss': criterion,}, os.path.join(config['checkpoints'], 'best-checkpoint.pth'))
+        'loss': criterion,}, os.path.join(project_dir, 'best-checkpoint.pth'))
 
     # plot and save the train and validation graphs
     plt.figure(figsize=(10, 7))
@@ -72,5 +76,5 @@ if __name__ == '__main__':
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
-    plt.savefig('../loss.png')
+    plt.savefig(os.path.join(project_dir,'loss.png'))
     plt.show()

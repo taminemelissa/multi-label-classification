@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from math import *
 import json
 
@@ -64,5 +65,14 @@ def convert_string_labels_into_numbers(df, labels):
 def load_json(input_filename):
     with open(input_filename, 'r', encoding='utf8') as f:
         return json.load(f)
+    
+    
+def concatenate_features(df):
+    l = []
+    for i in range(len(df)):
+        arr = np.array([*det['audio_features'][i], *det['usage_features'][i]])
+        l.append(arr)
+    return pd.Series(l)
+        
 
 
