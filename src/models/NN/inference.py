@@ -25,7 +25,7 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     #intialize the model
-    model = UsageNet1()  # initialize the neural network
+    model = MixNet2()  # initialize the neural network
     model.to(device=device)
     
     # load the model checkpoint
@@ -61,9 +61,9 @@ if __name__ == '__main__':
         outputs = outputs.detach().cpu()
         sorted_outputs = np.sort(outputs[0])
         sorted_indices = np.argsort(outputs[0])
-        if sorted_outputs[-3] > 0.2:
+        if sorted_outputs[-3] > 0.3:
             best = sorted_indices[-3:]
-        elif sorted_outputs[-2] > 0.3:
+        elif sorted_outputs[-2] > 0.4:
             best = sorted_indices[-2:]
         else:
             best = sorted_indices[-1:]

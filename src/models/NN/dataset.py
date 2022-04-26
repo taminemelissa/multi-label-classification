@@ -55,3 +55,4 @@ class TrackDataset(Dataset):
             'feature': torch.tensor(feature, dtype=torch.float32),
             'label': torch.tensor(targets, dtype=torch.float32)
         }
+

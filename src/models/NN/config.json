@@ -1,5 +1,5 @@
 {
-    "path": "models/best_UsageNet1.pth",
+    "path": "models/best_MixNet2.pth",
     "lr": 0.0001,
     "epochs": 40,
     "batch_size": 32
