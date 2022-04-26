@@ -1,27 +1,32 @@
 if __name__ == '__main__':
+    
     import os
     import sys
+    project_dir = os.getcwd().split('src')[0]
+    sys.path.append(project_dir)
+
+    import pandas as pd
     import torch.optim as optim
     import pandas as pd
     import matplotlib.pyplot as plt
     import matplotlib
-    from models import *
-    from dataset import TrackDataset
+    matplotlib.style.use('ggplot')
+    from src.models.NN.audio_models import *
+    from src.models.NN.usage_models import *
+    from src.models.NN.mix_models import *
+    from src.models.NN.dataset import TrackDataset
     from torch.utils.data import DataLoader
     from src.utils.tools import load_json
-
-    matplotlib.style.use('ggplot')
-    project_dir = os.getcwd().split('src')[0]
-    sys.path.append(project_dir)
+    from src.utils.save_best_model import *
 
     # load the config file
-    config = load_json('config.json')
+    config = load_json(os.path.join(project_dir, "src/models/NN/config.json"))
 
     # initialize the computation device
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
     # initialize the model
-    model = AudioNet1()  # initialize the neural network
+    model = MixNet2()  # initialize the neural network
     model.to(device=device)
 
     # learning parameters
@@ -31,8 +36,11 @@ if __name__ == '__main__':
     optimizer = optim.Adam(model.parameters(), lr=lr)
     criterion = nn.BCELoss()
 
+    # initialize SaveBestModel class
+    save_best_model = SaveBestModel()
+
     # read the parquet file
-    df = pd.read_parquet("dataset2.parquet", engine="pyarrow")
+    df = pd.read_parquet(os.path.join(project_dir,"dataset2.parquet"), engine="pyarrow")
 
     # train dataset
     train_data = TrackDataset(df, train=True, test=False)
@@ -51,19 +59,21 @@ if __name__ == '__main__':
     valid_loss = []
     for epoch in range(epochs):
         print(f"Epoch {epoch + 1} of {epochs}")
-        train_epoch_loss = train(model, train_loader, optimizer, criterion, train_data, device)
-        valid_epoch_loss = validate(model, valid_loader, criterion, valid_data, device)
+        train_epoch_loss = model._train(model=model, dataloader=train_loader, optimizer=optimizer, criterion=criterion, train_data=train_data)
+        valid_epoch_loss = model._validate(model=model, dataloader=valid_loader, criterion=criterion, val_data=valid_data)
         train_loss.append(train_epoch_loss)
         valid_loss.append(valid_epoch_loss)
         print(f"Train Loss: {train_epoch_loss:.4f}")
         print(f'Val Loss: {valid_epoch_loss:.4f}')
+        save_best_model(valid_epoch_loss, epoch, model, optimizer, criterion)
+        print('-' * 50)
 
-    # save the trained model to disk
-    torch.save({
-        'epoch': epochs,
-        'model_state_dict': model.state_dict(),
-        'optimizer_state_dict': optimizer.state_dict(),
-        'loss': criterion,}, os.path.join(config['checkpoints'], 'best-checkpoint.pth'))
+    # save the final trained model to disk
+    #torch.save({
+        #'epoch': epochs,
+        #'model_state_dict': model.state_dict(),
+        #'optimizer_state_dict': optimizer.state_dict(),
+        #'loss': criterion,}, os.path.join(project_dir, 'final_model.pth'))
 
     # plot and save the train and validation graphs
     plt.figure(figsize=(10, 7))
@@ -72,5 +82,5 @@ if __name__ == '__main__':
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
-    plt.savefig('../loss.png')
+    plt.savefig(os.path.join(project_dir,f"docs/outputs/NN/loss_{model.name}.png"))
     plt.show()
