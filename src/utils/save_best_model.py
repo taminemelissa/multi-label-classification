@@ -2,6 +2,9 @@ import torch
 import matplotlib.pyplot as plt
 
 plt.style.use('ggplot')
+import os
+import sys
+project_dir = os.getcwd().split('src')[0]
 
 
 class SaveBestModel:
@@ -29,4 +32,4 @@ class SaveBestModel:
                 'model_state_dict': model.state_dict(),
                 'optimizer_state_dict': optimizer.state_dict(),
                 'loss': criterion,
-            }, 'best_model.pth')
+            }, os.path.join(project_dir,f'models/best_{model.name}.pth'))

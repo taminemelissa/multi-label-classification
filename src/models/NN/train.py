@@ -82,5 +82,5 @@ if __name__ == '__main__':
     plt.xlabel('Epochs')
     plt.ylabel('Loss')
     plt.legend()
-    plt.savefig(os.path.join(project_dir,'loss.png'))
+    plt.savefig(os.path.join(project_dir,f"docs/outputs/NN/loss_{model.name}.png"))
     plt.show()
