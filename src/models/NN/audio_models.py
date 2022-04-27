@@ -49,3 +49,5 @@ class AudioNet3(BaseNet):
         out = self.relu(out)
         out = self.maxpool1(out)
         out = self.fc1(out)
+        out = out.reshape([1,21])
+        return out
