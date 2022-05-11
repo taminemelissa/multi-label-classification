@@ -1,6 +1,6 @@
 {
-    "path": "models/best_MixNet2.pth",
+    "path": "models/best_MixNet3.pth",
     "lr": 0.0001,
-    "epochs": 15,
-    "batch_size": 32
+    "epochs": 100,
+    "batch_size": 24
 }
