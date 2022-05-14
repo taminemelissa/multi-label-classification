@@ -1,0 +1,8 @@
+,Accuracy,Precision micro,Recall micro,F1 score micro,Hamming-Loss
+Top Genre,0.108,0.162,0.138,0.149,0.088
+RL audio (seulement) & sans pénalisation,0.36,0.725,0.432,0.541,0.041
+RL audio (seulement)& pénalisation (optimisée),0.354,0.738,0.421,0.536,0.041
+RL usage (seulement) & sans pénalisation,0.715,0.871,0.788,0.827,0.018
+RL usage (seulement) & pénalisation (optimisée),0.715,0.871,0.787,0.827,0.018
+RL audio-usage,0.72,0.87,0.797,0.832,0.018
+RL audio-usage & pénalisation (optimisée),0.718,0.875,0.788,0.829,0.018
