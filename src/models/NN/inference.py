@@ -25,7 +25,7 @@ if __name__ == '__main__':
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     
     #intialize the model
-    model = MixNet2()  # initialize the neural network
+    model = MixNet3()  # initialize the neural network
     model.to(device=device)
     
     # load the model checkpoint

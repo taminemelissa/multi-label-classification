@@ -36,18 +36,23 @@ class AudioNet3(BaseNet):
     def __init__(self):
         super(AudioNet3,self).__init__()
         self.data_type = 0
-        self.conv1 = nn.Conv1d(in_channels=1, out_channels=32, kernel_size=3, stride=1, padding=0)
-        self.conv2 = nn.Conv1d(in_channels=32, out_channels=32, kernel_size=3, stride=1, padding=0)
+        self.dropout = nn.Dropout(0.5)
+        self.fc1 = nn.Linear(256, 128)
         self.relu = nn.ReLU()
-        self.maxpool1 = nn.MaxPool1d(2)
-        self.fc1 = nn.Linear(126, 21)
-        
-    def forward(self,x):
-        out = self.conv1(x)
-        out = self.relu(out)
-        out = self.conv2(out)
-        out = self.relu(out)
-        out = self.maxpool1(out)
-        out = self.fc1(out)
-        out = out.reshape([1,21])
-        return out
+        self.fc2 = nn.Linear(128,64)
+        self.fc3 = nn.Linear(64,21)
+        self.norm1 = nn.BatchNorm1d(128)
+        self.norm2 = nn.BatchNorm1d(64)
+        self.norm3 = nn.BatchNorm1d(21)
+    
+    def forward(self, x):
+        output = self.dropout(x)
+        output = self.fc1(output)
+        output = self.norm1(output)
+        output = self.relu(output)
+        output = self.fc2(output)
+        output = self.norm2(output)
+        output = self.relu(output)
+        output = self.fc3(output)
+        output = self.norm3(output)
+        return output
